@@ -1,7 +1,7 @@
 #define _XOPEN_SOURCE 700
 #define TEMP_OFFSET 0.0f
 #define BME680_NUM_OUTPUTS 14
-#define BME688_NUM_OUTPUTS 14
+#define BME688_NUM_OUTPUTS 18
 
 #include "internal_functions.h"
 
@@ -217,6 +217,7 @@ bsec_library_return_t bsec_set_sample_rate(float sample_rate, uint8_t variant_id
     requested_virtual_sensors[13].sample_rate = sample_rate;
     // if (variant_id == BME68X_VARIANT_GAS_HIGH)
     // {
+    //      sample_rate = SEL = 1/scan_duration
     //     printf("n_requested_virtual_sensors = %d\n", n_requested_virtual_sensors);
     //     requested_virtual_sensors[14].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_1;
     //     requested_virtual_sensors[14].sample_rate = sample_rate;
@@ -226,9 +227,9 @@ bsec_library_return_t bsec_set_sample_rate(float sample_rate, uint8_t variant_id
     //     requested_virtual_sensors[16].sample_rate = sample_rate;
     //     requested_virtual_sensors[17].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_4;
     //     requested_virtual_sensors[17].sample_rate = sample_rate;
-    //     requested_virtual_sensors[18].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
-    //     requested_virtual_sensors[18].sample_rate = sample_rate;
     // }
+    // requested_virtual_sensors[18].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
+    // requested_virtual_sensors[18].sample_rate = sample_rate; // sample_rate = HTR = 1/heater step duration
 
     return bsec_update_subscription(requested_virtual_sensors, n_requested_virtual_sensors, required_sensor_settings, &n_required_sensor_settings);
 }

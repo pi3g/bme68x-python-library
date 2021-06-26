@@ -11,19 +11,19 @@ pip3 install bme68x
 ```
 
 ### How to install the extension with BSEC
-- clone this repo to a desired location on you hard drive
+- clone [this repo](https://github.com/pi3g/bme68x-python-library) to a desired location on you hard drive
 - download the licensed BSEC2.0 library [from BOSCH](https://www.bosch-sensortec.com/software-tools/software/bme688-software/)<br>
-- unzip it into the AirQuality folder, next to this README
-- open a new terminal window inside the AirQuality folder
+- unzip it into the *bme68x-python-library-main* folder, next to this *README.md*
+- open a new terminal window inside the *bme68x-python-library-main* folder
 ```bash
 sudo python3 setup.py install
 ```
-- this will build and install the extension
 
 ### How to use the extension
 - to import in Python
 ```python
-import bme68x```
+import bme68x
+```
 or
 ```python
 from bme68x import BME68X
@@ -36,7 +36,7 @@ from bme68x import BME68X
 
 # Replace I2C_ADDR with the I2C address of your sensor
 # Either 0x76 (default for BME680) or 0x77 (default for BME688)
-BME68X(, 0).get_data()
+BME68X(I2C_ADDR, 0).get_data()
 ```
 
 #### For documentation and examples please refer to our [GitHub](https://github.com/pi3g/bme68x-python-library)<br>

@@ -346,6 +346,20 @@ static PyObject *bme_set_heatr_conf(BMEObject *self, PyObject *args)
     }
     if (self->op_mode == BME68X_FORCED_MODE)
     {
+#ifdef BSEC
+        if (self->use_bsec == 1)
+        {   
+            bsec_sensor_configuration_t requested_virtual_sensors[1];
+            bsec_sensor_configuration_t required_sensor_settings[BSEC_MAX_PHYSICAL_SENSOR];
+            uint8_t n_required_sensor_settings = BSEC_MAX_PHYSICAL_SENSOR;
+            
+            requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
+            requested_virtual_sensors[0].BSEC_SAMPLE_RATE_DISABLED;
+            
+            bsec_update_subscription(requested_virtual_sensors, 1, required_sensor_settings, &n_required_sensor_settings);
+        }
+#endif
+        
         uint16_t heatr_temp, heatr_dur;
         PyArg_Parse(temp_prof_obj, "H", &heatr_temp);
         PyArg_Parse(dur_prof_obj, "H", &heatr_dur);
@@ -404,6 +418,27 @@ static PyObject *bme_set_heatr_conf(BMEObject *self, PyObject *args)
             printf("%d ", dur_prof[i]);
         }
         printf("\n");
+        
+#ifdef BSEC
+        if (self->use_bsec == 1)
+        {   
+            bsec_sensor_configuration_t requested_virtual_sensors[1];
+            bsec_sensor_configuration_t required_sensor_settings[BSEC_MAX_PHYSICAL_SENSOR];
+            uint8_t n_required_sensor_settings = BSEC_MAX_PHYSICAL_SENSOR;
+            
+            uint8_t PROFILE_DUR = 0;
+            for (uint8_t i = 0; i < dur_size; i++) {
+                PROFILE_DUR += dur_prof[i];
+            }
+                
+            float_t HTR = 1 / PROFILE_DUR
+            requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
+            requested_virtual_sensors[0].sample_rate = HTR; // sample_rate = HTR = 1/heater step duration
+            
+            bsec_update_subscription(requested_virtual_sensors, 1, required_sensor_settings, &n_required_sensor_settings);
+        }
+#endif
+        
         if (self->op_mode == BME68X_PARALLEL_MODE)
         {
             self->rslt = pi3g_set_heater_conf_pm(enable, temp_prof, dur_prof, (uint8_t)temp_size, &(self->conf), &(self->heatr_conf), &(self->bme));

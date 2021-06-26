@@ -1,20 +1,31 @@
 from setuptools import setup, Extension, find_packages
-import pathlib
+from pathlib import Path
 
-LIBDIR = pathlib.Path(__file__).parent
+BSEC = True
+
+if BSEC:
+    ext_comp_args = ['-D BSEC']
+    libs = ['pthread', 'm', 'rt', 'algobsec']
+    lib_dirs = ['/usr/local/lib', 'BSEC_2.0.6.1_Generic_Release_04302021/algo/normal_version/bin/RaspberryPi/PiThree_ArmV6']
+else:
+    ext_comp_args = []
+    libs = ['pthread', 'm', 'rt']
+    lib_dirs = ['/usr/local/lib']
+
+LIBDIR = Path(__file__).parent
 
 README = (LIBDIR / "README.md").read_text()
 
 bme68x = Extension('bme68x',
-    extra_compile_args = ['-D BSEC'], # Add '-D BSEC' to enable BSEC
+    extra_compile_args = ext_comp_args,
 	include_dirs = ['/usr/local/include'],
-	libraries = ['pthread', 'm', 'rt', 'algobsec'],
-	library_dirs = ['/usr/local/lib', 'BSEC_2.0.6.1_Generic_Release_04302021/algo/normal_version/bin/RaspberryPi/PiThree_ArmV6'],
+	libraries = libs,
+	library_dirs = lib_dirs,
     depends = ['BME68x-Sensor-API/bme68x.h', 'BME68x-Sensor-API/bme68x.c', 'BME68x-Sensor-API/bme68x_defs.h', 'internal_functions.h', 'internal_functions.c'],
 	sources =['bme68xmodule.c', 'BME68x-Sensor-API/bme68x.c', 'internal_functions.c'])
 
 setup (name = 'bme68x',
-	version = '1.0.2',
+	version = '1.0.3',
 	description = 'Python interface for BME68X sensor and BSEC',
     long_description = README,
     long_description_content_type = 'text/markdown',

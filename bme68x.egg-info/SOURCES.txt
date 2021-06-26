@@ -1,0 +1,11 @@
+README.md
+bme68xConstants.py
+bme68xmodule.c
+bsecConstants.py
+internal_functions.c
+setup.py
+BME68x-Sensor-API/bme68x.c
+bme68x.egg-info/PKG-INFO
+bme68x.egg-info/SOURCES.txt
+bme68x.egg-info/dependency_links.txt
+bme68x.egg-info/top_level.txt

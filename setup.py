@@ -6,7 +6,7 @@ LIBDIR = pathlib.Path(__file__).parent
 README = (LIBDIR / "README.md").read_text()
 
 bme68x = Extension('bme68x',
-    extra_compile_args = [], # Add '-D BSEC' to enable BSEC
+    extra_compile_args = ['-D BSEC'], # Add '-D BSEC' to enable BSEC
 	include_dirs = ['/usr/local/include'],
 	libraries = ['pthread', 'm', 'rt', 'algobsec'],
 	library_dirs = ['/usr/local/lib', 'BSEC_2.0.6.1_Generic_Release_04302021/algo/normal_version/bin/RaspberryPi/PiThree_ArmV6'],

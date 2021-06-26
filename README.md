@@ -1,6 +1,9 @@
 # BME68X and BSEC2.0 for Python by pi3g
 
-This Python extension enables you to read measurement data by the BME68X sensor and the BSEC2.0 library from BOSCH
+This Python extension enables you to read measurement data by the BME68X sensor and the BSEC2.0 library from BOSCH.<br>
+The BME68X sensors by BOSCH Sensortec measure temperature, pressure and humidity.<br>
+Most importantly the sensor estimates the air pollution by recording the amount of VOCs (Volatile Organic Compounds).<br>
+With use of the (licensed) BSEC library from BOSCH, this allows for measuring the IAQ (Indoor Air Quality).<br>
 
 ### How to install the extension without BSEC
 ```bash
@@ -8,8 +11,8 @@ pip3 install bme68x
 ```
 
 ### How to install the extension with BSEC
-- unzip this folder to a location of your choice
-- download the licensed BSEC2.0 library [from BOSCH](https://www.bosch-sensortec.com/software-tools/software/bme688-software/)
+- clone this repo to a desired location on you hard drive
+- download the licensed BSEC2.0 library [from BOSCH](https://www.bosch-sensortec.com/software-tools/software/bme688-software/)<br>
 - unzip it into the AirQuality folder, next to this README
 - open a new terminal window inside the AirQuality folder
 ```bash

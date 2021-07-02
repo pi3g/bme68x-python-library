@@ -228,7 +228,8 @@ bme68x_init_type(BMEObject *self, PyObject *args, PyObject *kwds)
         }
         else
         {
-            fread(&serialized_settings[0], sizeof(unsigned char), BSEC_MAX_PROPERTY_BLOB_SIZE, bsec_conf);
+            FILE *bsec_conf_file;
+            bsec_conf_file = fread(&serialized_settings[0], sizeof(unsigned char), BSEC_MAX_PROPERTY_BLOB_SIZE, bsec_conf);
 
             // Apply the configuration
             bsec_rslt = bsec_set_configuration(serialized_settings, n_serialized_settings_max, work_buffer, n_work_buffer);
@@ -431,7 +432,7 @@ static PyObject *bme_set_heatr_conf(BMEObject *self, PyObject *args)
                 PROFILE_DUR += dur_prof[i];
             }
                 
-            float_t HTR = 1 / PROFILE_DUR
+            float_t HTR = 1 / PROFILE_DUR;
             requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
             requested_virtual_sensors[0].sample_rate = HTR; // sample_rate = HTR = 1/heater step duration
             
@@ -513,7 +514,7 @@ static PyObject *bme_get_bsec_data(BMEObject *self)
         }
         num_bsec_inputs = 0;
         uint8_t data_length = 0;
-        bsec_rlst = bsec_read_data(self->data, &data_length, time_stamp, bsec_inputs, &num_bsec_inputs, sensor_settings.process_data, sensor_settings.op_mode, &(self->bme));
+        bsec_rslt = bsec_read_data(self->data, &data_length, time_stamp, bsec_inputs, &num_bsec_inputs, sensor_settings.process_data, sensor_settings.op_mode, &(self->bme));
         if (bsec_rslt != BSEC_OK) {
             perror("read BSEC data");
             PyErr_SetString(bmeError, "FAILED TO READ BSEC DATA");

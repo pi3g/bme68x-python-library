@@ -228,8 +228,12 @@ bme68x_init_type(BMEObject *self, PyObject *args, PyObject *kwds)
         }
         else
         {
-            FILE *bsec_conf_file;
-            bsec_conf_file = fread(&serialized_settings[0], sizeof(unsigned char), BSEC_MAX_PROPERTY_BLOB_SIZE, bsec_conf);
+            uint8_t conf_len;
+            conf_len = fread(&serialized_settings[0], sizeof(unsigned char), BSEC_MAX_PROPERTY_BLOB_SIZE, bsec_conf);
+            if (conf_len == 0) {
+                perror("read BSEC config");
+                PyErr_SetString(bmeError, "Could not read from BSEC config file");
+            }
 
             // Apply the configuration
             bsec_rslt = bsec_set_configuration(serialized_settings, n_serialized_settings_max, work_buffer, n_work_buffer);

@@ -686,9 +686,9 @@ static PyObject *bme_get_data(BMEObject *self)
             PyDict_SetItemString(pydata, "sample_nr", Py_BuildValue("i", self->sample_count));
             PyDict_SetItemString(pydata, "timestamp", Py_BuildValue("i", self->time_ms));
             PyDict_SetItemString(pydata, "temperature", Py_BuildValue("d", self->data[0].temperature));
-            PyDict_SetItemString(pydata, "pressure", Py_BuildValue("d", self->data[0].pressure));
+            PyDict_SetItemString(pydata, "pressure", Py_BuildValue("d", self->data[0].pressure/100));
             PyDict_SetItemString(pydata, "humidity", Py_BuildValue("d", self->data[0].humidity));
-            PyDict_SetItemString(pydata, "gas_resistance", Py_BuildValue("d", self->data[0].gas_resistance));
+            PyDict_SetItemString(pydata, "gas_resistance", Py_BuildValue("d", self->data[0].gas_resistance/1000));
             PyDict_SetItemString(pydata, "status", Py_BuildValue("i", self->data[0].status));
             return pydata;
         }

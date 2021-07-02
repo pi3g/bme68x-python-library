@@ -4,7 +4,7 @@ from pathlib import Path
 BSEC = True
 
 if BSEC:
-    name = 'bme68xbsec'
+    name = 'bme68x'
     ext_comp_args = ['-D BSEC']
     libs = ['pthread', 'm', 'rt', 'algobsec']
     lib_dirs = ['/usr/local/lib', 'BSEC_2.0.6.1_Generic_Release_04302021/algo/normal_version/bin/RaspberryPi/PiThree_ArmV6']

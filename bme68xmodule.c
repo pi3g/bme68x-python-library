@@ -359,7 +359,7 @@ static PyObject *bme_set_heatr_conf(BMEObject *self, PyObject *args)
             uint8_t n_required_sensor_settings = BSEC_MAX_PHYSICAL_SENSOR;
             
             requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
-            requested_virtual_sensors[0].BSEC_SAMPLE_RATE_DISABLED;
+            requested_virtual_sensors[0].sample_rate = BSEC_SAMPLE_RATE_DISABLED;
             
             bsec_update_subscription(requested_virtual_sensors, 1, required_sensor_settings, &n_required_sensor_settings);
         }

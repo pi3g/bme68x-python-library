@@ -1,0 +1,15 @@
+LICENSE
+README.md
+bme68xConstants.py
+bme68xmodule.c
+bsecConstants.py
+internal_functions.c
+internal_functions.h
+setup.py
+BME68x-Sensor-API/bme68x.c
+BME68x-Sensor-API/bme68x.h
+BME68x-Sensor-API/bme68x_defs.h
+bme68x.egg-info/PKG-INFO
+bme68x.egg-info/SOURCES.txt
+bme68x.egg-info/dependency_links.txt
+bme68x.egg-info/top_level.txt

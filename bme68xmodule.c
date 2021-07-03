@@ -230,18 +230,21 @@ bme68x_init_type(BMEObject *self, PyObject *args, PyObject *kwds)
         {
             uint8_t conf_len;
             conf_len = fread(&serialized_settings[0], sizeof(unsigned char), BSEC_MAX_PROPERTY_BLOB_SIZE, bsec_conf);
-            if (conf_len == 0) {
+            if (conf_len == 0)
+            {
                 perror("read BSEC config");
                 PyErr_SetString(bmeError, "Could not read from BSEC config file");
             }
 
             // Apply the configuration
             bsec_rslt = bsec_set_configuration(serialized_settings, n_serialized_settings_max, work_buffer, n_work_buffer);
-            if (bsec_rslt != BSEC_OK) {
+            if (bsec_rslt != BSEC_OK)
+            {
                 perror("set BSEC config");
                 PyErr_SetString(bmeError, "Could not set BSEC config");
             }
-            else {
+            else
+            {
                 printf("SET BSEC CONFIG (SEL IAQ 3.3v 4d)\n");
             }
         }
@@ -353,18 +356,18 @@ static PyObject *bme_set_heatr_conf(BMEObject *self, PyObject *args)
     {
 #ifdef BSEC
         if (self->use_bsec == 1)
-        {   
+        {
             bsec_sensor_configuration_t requested_virtual_sensors[1];
             bsec_sensor_configuration_t required_sensor_settings[BSEC_MAX_PHYSICAL_SENSOR];
             uint8_t n_required_sensor_settings = BSEC_MAX_PHYSICAL_SENSOR;
-            
+
             requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
             requested_virtual_sensors[0].sample_rate = BSEC_SAMPLE_RATE_DISABLED;
-            
+
             bsec_update_subscription(requested_virtual_sensors, 1, required_sensor_settings, &n_required_sensor_settings);
         }
 #endif
-        
+
         uint16_t heatr_temp, heatr_dur;
         PyArg_Parse(temp_prof_obj, "H", &heatr_temp);
         PyArg_Parse(dur_prof_obj, "H", &heatr_dur);
@@ -423,27 +426,28 @@ static PyObject *bme_set_heatr_conf(BMEObject *self, PyObject *args)
             printf("%d ", dur_prof[i]);
         }
         printf("\n");
-        
+
 #ifdef BSEC
         if (self->use_bsec == 1)
-        {   
+        {
             bsec_sensor_configuration_t requested_virtual_sensors[1];
             bsec_sensor_configuration_t required_sensor_settings[BSEC_MAX_PHYSICAL_SENSOR];
             uint8_t n_required_sensor_settings = BSEC_MAX_PHYSICAL_SENSOR;
-            
+
             uint8_t PROFILE_DUR = 0;
-            for (uint8_t i = 0; i < dur_size; i++) {
+            for (uint8_t i = 0; i < dur_size; i++)
+            {
                 PROFILE_DUR += dur_prof[i];
             }
-                
+
             float_t HTR = 1 / PROFILE_DUR;
             requested_virtual_sensors[0].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
             requested_virtual_sensors[0].sample_rate = HTR; // sample_rate = HTR = 1/heater step duration
-            
+
             bsec_update_subscription(requested_virtual_sensors, 1, required_sensor_settings, &n_required_sensor_settings);
         }
 #endif
-        
+
         if (self->op_mode == BME68X_PARALLEL_MODE)
         {
             self->rslt = pi3g_set_heater_conf_pm(enable, temp_prof, dur_prof, (uint8_t)temp_size, &(self->conf), &(self->heatr_conf), &(self->bme));
@@ -519,7 +523,8 @@ static PyObject *bme_get_bsec_data(BMEObject *self)
         num_bsec_inputs = 0;
         uint8_t data_length = 0;
         bsec_rslt = bsec_read_data(self->data, &data_length, time_stamp, bsec_inputs, &num_bsec_inputs, sensor_settings.process_data, sensor_settings.op_mode, &(self->bme));
-        if (bsec_rslt != BSEC_OK) {
+        if (bsec_rslt != BSEC_OK)
+        {
             perror("read BSEC data");
             PyErr_SetString(bmeError, "FAILED TO READ BSEC DATA");
             return NULL;
@@ -691,9 +696,9 @@ static PyObject *bme_get_data(BMEObject *self)
             PyDict_SetItemString(pydata, "sample_nr", Py_BuildValue("i", self->sample_count));
             PyDict_SetItemString(pydata, "timestamp", Py_BuildValue("i", self->time_ms));
             PyDict_SetItemString(pydata, "temperature", Py_BuildValue("d", self->data[0].temperature));
-            PyDict_SetItemString(pydata, "pressure", Py_BuildValue("d", self->data[0].pressure/100));
+            PyDict_SetItemString(pydata, "pressure", Py_BuildValue("d", self->data[0].pressure / 100));
             PyDict_SetItemString(pydata, "humidity", Py_BuildValue("d", self->data[0].humidity));
-            PyDict_SetItemString(pydata, "gas_resistance", Py_BuildValue("d", self->data[0].gas_resistance/1000));
+            PyDict_SetItemString(pydata, "gas_resistance", Py_BuildValue("d", self->data[0].gas_resistance / 1000));
             PyDict_SetItemString(pydata, "status", Py_BuildValue("i", self->data[0].status));
             return pydata;
         }
@@ -733,7 +738,7 @@ static PyObject *bme_get_data(BMEObject *self)
                 if (self->data[i].status == BME68X_VALID_DATA)
                 {
                     field = PyDict_New();
-                    PyDict_SetItemString(field, "sample_nr", Py_BuildValue("i", n_samples));
+                    PyDict_SetItemString(field, "sample_nr", Py_BuildValue("i", self->sample_count));
                     PyDict_SetItemString(field, "timestamp", Py_BuildValue("i", self->time_ms));
                     PyDict_SetItemString(field, "temperature", Py_BuildValue("d", self->data[i].temperature));
                     PyDict_SetItemString(field, "pressure", Py_BuildValue("d", self->data[i].pressure / 100));

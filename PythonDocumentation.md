@@ -17,6 +17,27 @@ BME68X(i2c_addr (int), use_bsec (int))
 
 
 Methods
+close_i2c()
+- Close the I2C port
+- Returns:
+  - 0 for success
+  - < 0 for error
+
+open_i2c(i2c_addr (int))
+- Open the I2C port and establish connection to i2c_addr
+- Args:
+  - i2c_addr (int): I2C address
+- Returns:
+  - 0 for success
+  - throws Error otherwise
+
+get_variant()
+- Get the Sensor variant
+- Returns
+  - "BME680" in case of BME680
+  - "BME688" in case of BME688
+  - "UNKOWN" otherwise
+
 set_temp_offset(t_offs (int))
 - Set the temperature offset to be subtracted from 25 degC
 - Args:

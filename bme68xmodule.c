@@ -307,6 +307,60 @@ static PyObject *bme_set_temp_offset(BMEObject *self, PyObject *args)
     return Py_BuildValue("i", 0);
 }
 
+static PyObject *bme_close_i2c(BMEObject *self)
+{
+    return Py_BuildValue("i", close(*((uint8_t *)self->bme.intf_ptr)));
+}
+
+static PyObject *bme_open_i2c(BMEObject *self, PyObject *args)
+{
+    close(*((uint8_t *)self->bme.intf_ptr));
+    self->linux_device = open(I2C_PORT_1, O_RDWR);
+    self->bme.intf_ptr = &(self->linux_device);
+    Py_ssize_t size = PyTuple_Size(args);
+    uint8_t i2c_addr;
+
+    if ((uint8_t)size == 1)
+    {
+        if (!PyArg_ParseTuple(args, "b", &i2c_addr))
+        {
+            PyErr_SetString(bmeError, "Failed to parse I2C address");
+            return NULL;
+        }
+        else if (ioctl(*((uint8_t *)self->bme.intf_ptr), I2C_SLAVE, i2c_addr) < 0)
+        {
+            PyErr_SetString(bmeError, "Failed to open I2C address");
+            return NULL;
+        }
+    }
+    else
+    {
+        PyErr_SetString(bmeError, "Argument must be i2c_addr: int");
+        close(*((uint8_t *)self->bme.intf_ptr));
+        return NULL;
+    }
+
+    return Py_BuildValue("i", 0);
+}
+
+static PyObject *bme_get_variant(BMEObject *self)
+{
+    char *variant = "";
+    if (self->bme.variant_id == BME68X_VARIANT_GAS_LOW)
+    {
+        variant = "BME680";
+    }
+    else if (self->bme.variant_id == BME68X_VARIANT_GAS_HIGH)
+    {
+        variant = "BME688";
+    }
+    else
+    {
+        variant = "UNKNOWN";
+    }
+    return Py_BuildValue("s", variant);
+}
+
 static PyObject *bme_set_conf(BMEObject *self, PyObject *args)
 {
     Py_ssize_t size = PyTuple_Size(args);
@@ -760,6 +814,9 @@ static PyObject *bme_get_data(BMEObject *self)
 
 static PyMethodDef bme68x_methods[] = {
     {"set_temp_offset", (PyCFunction)bme_set_temp_offset, METH_VARARGS, "Set temperature offset"},
+    {"close_i2c", (PyCFunction)bme_close_i2c, METH_NOARGS, "Close the I2C bus"},
+    {"open_i2c", (PyCFunction)bme_open_i2c, METH_VARARGS, "Open the I2C bus and connect to I2C address"},
+    {"get_variant", (PyCFunction)bme_get_variant, METH_NOARGS, "Return string representing variant (BME680 or BME688)"},
     {"set_conf", (PyCFunction)bme_set_conf, METH_VARARGS, "Configure the BME68X sensor"},
     {"set_heatr_conf", (PyCFunction)bme_set_heatr_conf, METH_VARARGS, "Configure the BME68X heater"},
     {"get_data", (PyCFunction)bme_get_data, METH_NOARGS, "Measure and read data from the BME68X sensor w/o BSEC"},

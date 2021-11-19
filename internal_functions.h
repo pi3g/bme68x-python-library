@@ -37,13 +37,13 @@ extern "C"
 
     int8_t pi3g_write(uint8_t regAddr, const uint8_t *regData, uint32_t len, void *intf_ptr);
 
-    int8_t pi3g_set_conf(uint8_t os_hum, uint8_t os_pres, uint8_t os_temp, uint8_t filter, uint8_t odr, struct bme68x_conf *conf, struct bme68x_dev *bme);
+    int8_t pi3g_set_conf(uint8_t os_hum, uint8_t os_pres, uint8_t os_temp, uint8_t filter, uint8_t odr, struct bme68x_conf *conf, struct bme68x_dev *bme, uint8_t debug_mode);
 
-    int8_t pi3g_set_heater_conf_fm(uint8_t enable, uint16_t heatr_temp, uint16_t heatr_dur, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme);
+    int8_t pi3g_set_heater_conf_fm(uint8_t enable, uint16_t heatr_temp, uint16_t heatr_dur, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme, uint8_t debug_mode);
 
-    int8_t pi3g_set_heater_conf_pm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_conf *conf, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme);
+    int8_t pi3g_set_heater_conf_pm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_conf *conf, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme, uint8_t debug_mode);
 
-    int8_t pi3g_set_heater_conf_sm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme);
+    int8_t pi3g_set_heater_conf_sm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme, uint8_t debug_mode);
 
     int64_t pi3g_timestamp_ns();
 
@@ -52,7 +52,9 @@ extern "C"
     uint32_t pi3g_timestamp_ms();
 
 #ifdef BSEC
-    bsec_library_return_t bsec_set_sample_rate(float sample_rate, uint8_t variant_id);
+    bsec_library_return_t bsec_set_sample_rate(float sample_rate);
+
+    bsec_library_return_t bsec_set_sample_rate_ai(uint8_t variant_id, struct bme68x_heatr_conf bme68x_heatr_conf, uint8_t num_ai_classes);
 
     bsec_library_return_t bsec_read_data(struct bme68x_data *data, uint8_t *data_len, int64_t time_stamp, bsec_input_t *inputs, uint8_t *n_bsec_inputs, int32_t bsec_process_data, uint8_t op_mode, struct bme68x_dev *bme);
 

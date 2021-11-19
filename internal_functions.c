@@ -1,7 +1,7 @@
 #define _XOPEN_SOURCE 700
 #define TEMP_OFFSET 0.0f
-#define BME680_NUM_OUTPUTS 14
-#define BME688_NUM_OUTPUTS 18
+#define NUM_OUTPUTS 14
+#define BSEC
 
 #include "internal_functions.h"
 
@@ -68,7 +68,7 @@ int8_t pi3g_write(uint8_t regAddr, const uint8_t *regData, uint32_t len, void *i
     return rslt;
 }
 
-int8_t pi3g_set_conf(uint8_t os_hum, uint8_t os_pres, uint8_t os_temp, uint8_t filter, uint8_t odr, struct bme68x_conf *conf, struct bme68x_dev *bme)
+int8_t pi3g_set_conf(uint8_t os_hum, uint8_t os_pres, uint8_t os_temp, uint8_t filter, uint8_t odr, struct bme68x_conf *conf, struct bme68x_dev *bme, uint8_t debug_mode)
 {
     int8_t rslt = BME68X_OK;
 
@@ -89,11 +89,14 @@ int8_t pi3g_set_conf(uint8_t os_hum, uint8_t os_pres, uint8_t os_temp, uint8_t f
     {
         perror("bme68x_set_conf");
     }
-    printf("SET BME68X CONFIG\n");
+    if (debug_mode == 1)
+    {
+        printf("SET BME68X CONFIG\n");
+    }
     return rslt;
 }
 
-int8_t pi3g_set_heater_conf_fm(uint8_t enable, uint16_t heatr_temp, uint16_t heatr_dur, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme)
+int8_t pi3g_set_heater_conf_fm(uint8_t enable, uint16_t heatr_temp, uint16_t heatr_dur, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme, uint8_t debug_mode)
 {
     int8_t rslt = BME68X_OK;
     heatr_conf->enable = enable;
@@ -104,11 +107,14 @@ int8_t pi3g_set_heater_conf_fm(uint8_t enable, uint16_t heatr_temp, uint16_t hea
     {
         perror("bme68x_set_heatr_conf");
     }
-    printf("SET HEATER CONFIG (FORCED MODE)\n");
+    if (debug_mode == 1)
+    {
+        printf("SET HEATER CONFIG (FORCED MODE)\n");
+    }
     return rslt;
 }
 
-int8_t pi3g_set_heater_conf_pm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_conf *conf, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme)
+int8_t pi3g_set_heater_conf_pm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_conf *conf, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme, uint8_t debug_mode)
 {
     int8_t rslt = BME68X_OK;
     heatr_conf->enable = enable;
@@ -121,16 +127,21 @@ int8_t pi3g_set_heater_conf_pm(uint8_t enable, uint16_t temp_prof[], uint16_t du
     {
         perror("bme68x_set_heatr_conf");
     }
+
     rslt = bme68x_set_op_mode(BME68X_PARALLEL_MODE, bme);
     if (rslt != BME68X_OK)
     {
         perror("bme68x_set_op_mode");
     }
-    printf("SET HEATER CONFIG (PARALLEL MODE)\n");
+    if (debug_mode == 1)
+    {
+        printf("SET HEATER CONFIG (PARALLEL MODE)\n");
+    }
+
     return rslt;
 }
 
-int8_t pi3g_set_heater_conf_sm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme)
+int8_t pi3g_set_heater_conf_sm(uint8_t enable, uint16_t temp_prof[], uint16_t dur_prof[], uint8_t profile_len, struct bme68x_heatr_conf *heatr_conf, struct bme68x_dev *bme, uint8_t debug_mode)
 {
     int8_t rslt = BME68X_OK;
     heatr_conf->enable = enable;
@@ -147,7 +158,10 @@ int8_t pi3g_set_heater_conf_sm(uint8_t enable, uint16_t temp_prof[], uint16_t du
     {
         perror("bme68x_set_op_mode");
     }
-    printf("SET HEATER CONFIG (SEQUENTIAL MODE)\n");
+    if (debug_mode == 1)
+    {
+        printf("SET HEATER CONFIG (SEQUENTIAL MODE)\n");
+    }
     return rslt;
 }
 
@@ -171,17 +185,10 @@ uint32_t pi3g_timestamp_ms()
 }
 
 #ifdef BSEC
-bsec_library_return_t bsec_set_sample_rate(float sample_rate, uint8_t variant_id)
+bsec_library_return_t bsec_set_sample_rate(float sample_rate)
 {
     uint8_t n_requested_virtual_sensors;
-    if (variant_id == BME68X_VARIANT_GAS_LOW)
-    {
-        n_requested_virtual_sensors = BME680_NUM_OUTPUTS;
-    }
-    else
-    {
-        n_requested_virtual_sensors = BME688_NUM_OUTPUTS;
-    }
+    n_requested_virtual_sensors = NUM_OUTPUTS;
     bsec_sensor_configuration_t requested_virtual_sensors[n_requested_virtual_sensors];
 
     bsec_sensor_configuration_t required_sensor_settings[BSEC_MAX_PHYSICAL_SENSOR];
@@ -215,23 +222,50 @@ bsec_library_return_t bsec_set_sample_rate(float sample_rate, uint8_t variant_id
     requested_virtual_sensors[12].sample_rate = sample_rate;
     requested_virtual_sensors[13].sensor_id = BSEC_OUTPUT_GAS_PERCENTAGE;
     requested_virtual_sensors[13].sample_rate = sample_rate;
-    // if (variant_id == BME68X_VARIANT_GAS_HIGH)
-    // {
-    //      sample_rate = SEL = 1/scan_duration
-    //     printf("n_requested_virtual_sensors = %d\n", n_requested_virtual_sensors);
-    //     requested_virtual_sensors[14].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_1;
-    //     requested_virtual_sensors[14].sample_rate = sample_rate;
-    //     requested_virtual_sensors[15].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_2;
-    //     requested_virtual_sensors[15].sample_rate = sample_rate;
-    //     requested_virtual_sensors[16].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_3;
-    //     requested_virtual_sensors[16].sample_rate = sample_rate;
-    //     requested_virtual_sensors[17].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_4;
-    //     requested_virtual_sensors[17].sample_rate = sample_rate;
-    // }
-    // requested_virtual_sensors[18].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
-    // requested_virtual_sensors[18].sample_rate = sample_rate; // sample_rate = HTR = 1/heater step duration
 
     return bsec_update_subscription(requested_virtual_sensors, n_requested_virtual_sensors, required_sensor_settings, &n_required_sensor_settings);
+}
+
+bsec_library_return_t bsec_set_sample_rate_ai(uint8_t variant_id, struct bme68x_heatr_conf bme68x_heatr_conf, uint8_t num_ai_classes)
+{
+    if (variant_id == BME68X_VARIANT_GAS_LOW)
+    {
+        perror("bsec_set_sample_rate_ai");
+        printf("AI features are not available for BME680\n");
+        return BSEC_OK;
+    }
+    uint8_t n_requested_virtual_sensors;
+    n_requested_virtual_sensors = 4;
+    bsec_sensor_configuration_t requested_virtual_sensors[n_requested_virtual_sensors];
+
+    bsec_sensor_configuration_t required_sensor_settings[BSEC_MAX_PHYSICAL_SENSOR];
+    uint8_t n_required_sensor_settings = BSEC_MAX_PHYSICAL_SENSOR;
+
+    printf("SHARED HEATR DUR IN SET SAMPLE RATE AI %d\n", bme68x_heatr_conf.shared_heatr_dur);
+
+    float SEL = ((float)1000) / ((float)bme68x_heatr_conf.shared_heatr_dur);
+    printf("SEL %.6f\n", SEL);
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        if (i < num_ai_classes)
+        {
+            requested_virtual_sensors[i].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_1 + i;
+            requested_virtual_sensors[i].sample_rate = SEL;
+        }
+        else
+        {
+            requested_virtual_sensors[i].sensor_id = BSEC_OUTPUT_GAS_ESTIMATE_1 + i;
+            requested_virtual_sensors[i].sample_rate = BSEC_SAMPLE_RATE_DISABLED;
+        }
+    }
+    /*
+    float HTR = ((float)1000) / ((float)bme68x_heatr_conf.heatr_dur_prof[0]);
+    requested_virtual_sensors[4].sensor_id = BSEC_OUTPUT_RAW_GAS_INDEX;
+    requested_virtual_sensors[4].sample_rate = HTR;
+    */
+    bsec_library_return_t rslt = bsec_update_subscription(requested_virtual_sensors, n_requested_virtual_sensors, required_sensor_settings, &n_required_sensor_settings);
+    printf("SET_SAMPLE_RATE_AI %d\n", rslt);
+    return rslt;
 }
 
 bsec_library_return_t bsec_read_data(struct bme68x_data *data, uint8_t *data_len, int64_t time_stamp, bsec_input_t *inputs, uint8_t *n_bsec_inputs, int32_t bsec_process_data, uint8_t op_mode, struct bme68x_dev *bme)

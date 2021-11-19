@@ -4,7 +4,6 @@ from pathlib import Path
 BSEC = True
 
 if BSEC:
-    print('BSEC is True')
     ext_comp_args = ['-D BSEC']
     libs = ['pthread', 'm', 'rt', 'algobsec']
     lib_dirs = ['/usr/local/lib',
@@ -28,7 +27,7 @@ bme68x = Extension('bme68x',
                    sources=['bme68xmodule.c', 'BME68x-Sensor-API/bme68x.c', 'internal_functions.c'])
 
 setup(name='bme68x',
-      version='1.0.5',
+      version='1.1.0',
       description='Python interface for BME68X sensor and BSEC',
       long_description=README,
       long_description_content_type='text/markdown',

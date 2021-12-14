@@ -18,7 +18,10 @@ pip3 install bme68x
 ```bash
 sudo python3 setup.py install
 ```
-
+or to install under venv use
+```bash
+path/to/venv/bin/python3 setup.py install
+```
 ### How to use the extension
 - to import in Python
 ```python
@@ -36,7 +39,9 @@ from bme68x import BME68X
 
 # Replace I2C_ADDR with the I2C address of your sensor
 # Either 0x76 (default for BME680) or 0x77 (default for BME688)
-BME68X(I2C_ADDR, 0).get_data()
+bme68x = BME68X(I2C_ADDR, 0)
+bme68x.set_heatr_conf(1, 320, 100, 1)
+data = bme68x.get_data()
 ```
 
 #### For documentation and examples please refer to our [GitHub](https://github.com/pi3g/bme68x-python-library)<br>

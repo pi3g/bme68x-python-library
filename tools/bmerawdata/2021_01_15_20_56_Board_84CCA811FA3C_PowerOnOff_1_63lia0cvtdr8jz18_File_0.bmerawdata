@@ -1,0 +1,212 @@
+{
+  "configHeader": {
+    "dateCreated": "2020-10-20T08:54:10.804Z",
+    "appVersion": "0.7.4",
+    "boardType": "board_8",
+    "boardMode": "heater_profile_exploration",
+    "boardLayout": "grouped"
+  },
+  "configBody": {
+    "heaterProfiles": [
+      {
+        "id": "heater_354",
+        "timeBase": 140,
+        "temperatureTimeVectors": [
+          [
+            320,
+            5
+          ],
+          [
+            100,
+            2
+          ],
+          [
+            100,
+            10
+          ],
+          [
+            100,
+            30
+          ],
+          [
+            200,
+            5
+          ],
+          [
+            200,
+            5
+          ],
+          [
+            200,
+            5
+          ],
+          [
+            320,
+            5
+          ],
+          [
+            320,
+            5
+          ],
+          [
+            320,
+            5
+          ]
+        ]
+      }
+    ],
+    "dutyCycleProfiles": [
+      {
+        "id": "duty_5_10",
+        "numberScanningCycles": 5,
+        "numberSleepingCycles": 10
+      }
+    ],
+    "sensorConfigurations": [
+      {
+        "sensorIndex": 0,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 1,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 2,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 3,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 4,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 5,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 6,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      },
+      {
+        "sensorIndex": 7,
+        "heaterProfile": "heater_354",
+        "dutyCycleProfile": "duty_5_10"
+      }
+    ]
+  }
+	,
+    "rawDataHeader":
+	{
+	    "counterPowerOnOff": 1,
+	    "seedPowerOnOff": "63lia0cvtdr8jz18",
+	    "counterFileLimit": 0,
+	    "dateCreated": "1610744214",
+	    "dateCreated_ISO": "2021-01-15T20:56:54+00:00",
+	    "firmwareVersion": "1.2.0",
+	    "boardId": "84CCA811FA3C",
+	    "hashFunction": "HMAC-SHA256",
+	    "hmacValue": "E11A8ECCF92D3D07174D1B2D9F2D86C657B4D91EC6ABFB55EF9C97D4BD2B4882"
+	},
+    "rawDataBody":
+	{
+	    "dataColumns": [
+		{
+		    "name": "Sensor Index",
+		    "unit": "",
+		    "format": "integer",
+		    "key": "sensor_index"
+		},
+		{
+		    "name": "Sensor ID",
+		    "unit": "",
+		    "format": "integer",
+		    "key": "sensor_id"
+		},
+		{
+		    "name": "Time Since PowerOn",
+		    "unit": "Milliseconds",
+		    "format": "integer",
+		    "key": "timestamp_since_poweron"
+		},
+		{
+		    "name": "Real time clock",
+		    "unit": "Unix Timestamp: seconds since Jan 01 1970. (UTC); 0 = missing",
+		    "format": "integer",
+		    "key": "real_time_clock"
+		},
+		{
+		    "name": "Temperature",
+		    "unit": "DegreesClecius",
+		    "format": "float",
+		    "key": "temperature"
+		},
+		{
+		    "name": "Pressure",
+		    "unit": "Hectopascals",
+		    "format": "float",
+		    "key": "pressure"
+		},
+		{
+		    "name": "Relative Humidity",
+		    "unit": "Percent",
+		    "format": "float",
+		    "key": "relative_humidity"
+		},
+		{
+		    "name": "Resistance Gassensor",
+		    "unit": "Ohms",
+		    "format": "float",
+		    "key": "resistance_gassensor"
+		},
+		{
+		    "name": "Heater Profile Step Index",
+		    "unit": "",
+		    "format": "integer",
+		    "key": "heater_profile_step_index"
+		},
+		{
+		    "name": "Scanning enabled",
+		    "unit": "",
+		    "format": "integer",
+		    "key": "scanning_enabled"
+		},
+		{
+		    "name": "Label Tag",
+		    "unit": "",
+		    "format": "integer",
+		    "key": "label_tag"
+		},
+		{
+		    "name": "Error Code",
+		    "unit": "",
+		    "format": "integer",
+		    "key": "error_code"
+		}
+	    ],
+	    "dataBlock": [
+		[0,1643593544,3458,1610744216,26.599361,1006.229431,67.371544,3226.388672,0,1,0,0],
+		[1,1643597388,3482,1610744216,26.585138,1006.032898,67.389359,2931.542969,0,1,0,0],
+		[2,1643599435,3494,1610744216,26.815861,1006.145630,68.467758,3063.771484,0,1,0,0],
+		[3,1643595853,3505,1610744216,26.833313,1006.413757,67.133369,2737.643799,0,1,0,0],
+		[4,1643607370,3516,1610744216,28.875820,1006.394653,65.426056,2717.743896,0,1,0,0],
+		[5,1643613004,3527,1610744216,28.416388,1006.389954,64.989861,3157.826416,0,1,0,0],
+		[6,1643607585,3538,1610744216,29.224661,1006.534668,63.329742,2152.292236,0,1,0,0],
+		[7,1643582498,3549,1610744216,28.705414,1006.573669,63.339062,1853.178345,0,1,0,0],
+		[5,1643613004,6373,1610744219,198.098877,-267.230042,100.000000,176.741455,11,1,0,1],
+		[5,1643613004,6472,1610744219,198.098877,-267.230042,23.347681,176.741455,15,1,0,1],
+		[0,1643593544,7496,1610744220,199.746872,-265.219086,0.000000,176.923035,11,1,0,1],
+		[0,1643593544,7498,1610744220,199.746872,-265.219086,0.000000,176.923035,15,1,0,0]
+	    ]
+	}
+}

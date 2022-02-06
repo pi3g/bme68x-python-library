@@ -8,9 +8,9 @@ import bsecConstants as bsec
 from time import sleep
 
 print('TESTING FORCED MODE WITHOUT BSEC')
-bme = BME68X(cst.BME68X_I2C_ADDR_HIGH, 1)
+bme = BME68X(cst.BME68X_I2C_ADDR_HIGH, 0)
 # Configure sensor to measure at 320 degC for 100 millisec
-bme.set_heatr_conf(cst.BME68X_FORCED_MODE, 320, 100, cst.BME68X_ENABLE)
+bme.set_heatr_conf(cst.BME68X_ENABLE, 320, 100, cst.BME68X_FORCED_MODE)
 print(bme.get_data())
 sleep(3)
 print('\nTESTING FORCED MODE WITH BSEC')

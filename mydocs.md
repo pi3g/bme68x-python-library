@@ -1,5 +1,8 @@
+bme68x-python-library
+=====================
 
 This module supports the BME68X sensor as a Python class.
+
 Import the module via `<import bme68x>` or import the class via `<from bme68x import BME68X>`
 - To use the BME68X API constants, import bme68xConstants.py via `<import bme68xConstants.py as cnst>` 
 - To use the BSEC constants, import bsecConstants.py via `<import bsecConstants as bsec>`
@@ -12,22 +15,21 @@ and  [Python Documentation]
 
 
 <H1>Constructor</H1>
-BME68X(i2c_addr (int), use_bsec (int))
+BME68X(i2c_addr (int), use_bsec (int))<br>
+
 - Create and initialize new BME68X sensor object, initialize I2C interface
 - Args:
     - i2c_addr (int): I2C address of the BME68X sensor (execute <i2cdetect -y 1> in terminal to look up the i2c address, either 0x76 or 0x77)
-    - use_bsec (int): Enable/disable use of BSEC library (enable = 1 disable = 0, see bsecConstants.py)
+    - debug_mode (int): Enable/disable debug messages (enable = 1, disable = 0)
 - Returns:
-    - 0 for success
-    - non 0 for failure
-    
-_***I do not think use_bsec has the meaning of BSEC enable/disable in the 1.3 version. Set it to 0 - KMcA***_
+    - BME68X instance
 
 <H1>Methods</H1>
 
 init_bme68x()
 - initialises the sensor
 _The constructor does this and more - see above. KMcA_
+
 print_dur_prof()
 - Walks the duration profile array and prints it (to the tty)
 
@@ -46,7 +48,6 @@ get_sensor_id()
 get_chip_id()
 - Returns the device chip ID or null
 - Args: None
-
 
 close_i2c()
 - Close the I2C port
@@ -180,7 +181,7 @@ get_bsec_data()
     - comp_gas_accuracy (int) calibration status ranges from 0 (calibrating) to 3 (fully calibrated)
     - gas_percentage (double) 
     - gas_percentage_accuracy (int) calibration status ranges from 0 (calibrating) to 3 (fully calibrated)
-- **__Requires use_bsec to be set to BSEC_ENABLE_ -- KMcA Is this correct?**_
+- **__Requires version of bme68x-python-library that contains BSEC**_
 - co2_equivalent and breath_voc_equivalent are derived using static_iaq and lab results
 - They assume the sensor is used indoors and that humans are the source of the air pollution.
 

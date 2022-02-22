@@ -1,9 +1,7 @@
 bme68x-python-library
 =====================
 
-This module supports the BME68X sensor as a Python class.
-
-Import the module via `<import bme68x>` or import the class via `<from bme68x import BME68X>`
+This module supports the BME68X sensor as a Python class.<br>Import the module via `<import bme68x>` or import the class via `<from bme68x import BME68X>`
 - To use the BME68X API constants, import bme68xConstants.py via `<import bme68xConstants.py as cnst>` 
 - To use the BSEC constants, import bsecConstants.py via `<import bsecConstants as bsec>`
 

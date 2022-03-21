@@ -5,7 +5,7 @@ The BME68X sensors by BOSCH Sensortec measure temperature, pressure and humidity
 Most importantly the sensor estimates the air pollution by recording the amount of VOCs (Volatile Organic Compounds).<br>
 With use of the (licensed) BSEC library from BOSCH, this allows for measuring the IAQ (Indoor Air Quality).<br>
 
-**Check out thi [Installation Video](https://www.youtube.com/watch?v=TGWKcCPKhIE&t=12s)!**
+**Check out this [Installation Video](https://www.youtube.com/watch?v=TGWKcCPKhIE&t=12s)!**
 
 ### How to install the extension without BSEC
 ```bash

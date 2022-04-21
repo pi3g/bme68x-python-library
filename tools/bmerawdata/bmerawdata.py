@@ -139,6 +139,7 @@ class BME68X_AI(BME68X):
                         output_data.append(0)  # error code
                         print(output_data)
                         self.data.append(output_data)
+                        output_data = []
                 for i in range(self.duty_cycle['numberSleepingCycles']):
                     print('SLEEPING')
                     sleep(heatr_profile_dur * 140 / 1000)

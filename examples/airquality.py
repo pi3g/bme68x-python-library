@@ -37,7 +37,7 @@ def control_LED(iaq):
         return 'RED'
 
 
-bme = BME68X(cnst.BME68X_I2C_ADDR_HIGH, 0)
+bme = BME68X(cnst.BME68X_I2C_ADDR_HIGH, 1)
 bme.set_sample_rate(bsec.BSEC_SAMPLE_RATE_LP)
 
 

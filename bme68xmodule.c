@@ -259,6 +259,7 @@ static PyMemberDef bme68x_members[] = {
     {"op_mode", T_UBYTE, offsetof(BMEObject, op_mode), 0, "BME68X operation mode"},
     {"sample_count", T_UINT, offsetof(BMEObject, sample_count), 0, "number of data samples"},
     {"debug_mode", T_UBYTE, offsetof(BMEObject, debug_mode), 0, "enable/disable debug_mode"},
+    {NULL},
 };
 
 #ifdef BSEC
